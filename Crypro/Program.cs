@@ -1,4 +1,5 @@
 using Crypro.Context;
+using Crypro.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpClient();
+builder.Services.AddHostedService<CryptoDataService>();
 
 
 builder.Services.AddControllers();

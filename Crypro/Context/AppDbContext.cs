@@ -10,6 +10,7 @@ namespace Crypro.Context
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<Crypto> Cryptos { get; set; }
         public DbSet<CryptoPocket> CryptoPockets { get; set; }
+        public DbSet<ValueLog> ValueLogs { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -65,6 +65,14 @@ namespace Crypro.Service
                                     }
                                     crypto.value = item.Value.usd;
                                     dbContext.Cryptos.Update(crypto);
+                                    var log = new ValueLog
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        CryptoId = crypto.Id,
+                                        Value = crypto.value,
+                                        Date = DateTime.Now
+                                    };
+                                    await dbContext.ValueLogs.AddAsync(log, stoppingToken);
                                 }
                             }
 
@@ -79,7 +87,15 @@ namespace Crypro.Service
                                     Name = item.Key,
                                     value = item.Value.usd
                                 };
+                                var log = new ValueLog
+                                {
+                                    Id = Guid.NewGuid(),
+                                    CryptoId = crypto.Id,
+                                    Value = crypto.value,
+                                    Date = DateTime.Now
+                                };
                                 await dbContext.Cryptos.AddAsync(crypto, stoppingToken);
+                                await dbContext.ValueLogs.AddAsync(log, stoppingToken);
                             }
                         }
                         await dbContext.SaveChangesAsync(stoppingToken);

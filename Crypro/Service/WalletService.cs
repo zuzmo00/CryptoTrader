@@ -1,17 +1,28 @@
-﻿namespace Crypro.Service
+﻿using AutoMapper;
+using Crypro.Context;
+
+namespace Crypro.Service
 {
 
 
     public interface IWalletService
     {
         // Define methods for wallet management
-        Task<Guid> CreateWalletAsync(Guid userId);
-        Task<bool> UpdateWalletAsync(Guid walletId, WalletUpdateDto walletUpdateDto);
-        Task<bool> DeleteWalletAsync(Guid walletId);
-        Task<Wallet> GetWalletByIdAsync(Guid walletId);
-        Task<List<Wallet>> GetAllWalletsAsync();
+        Task<string> GetWallet(string id);
     }
-    public class WalletService
+    public class WalletService : IWalletService
     {
+        private readonly AppDbContext _dbContext;
+        private readonly IMapper _mapper;
+
+        public WalletService(AppDbContext dbContext, IMapper mapper)
+        {
+            _dbContext = dbContext;
+            _mapper = mapper;
+        }
+        public Task<string> GetWallet(string id)
+        {
+            var wallet= _dbContext.Wallets.FirstOrDefault(x => x.UserId.ToString() == id);
+        }
     }
 }

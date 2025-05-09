@@ -19,6 +19,7 @@ namespace Crypro.Entities
         public string Password { get; set; } = string.Empty;
         [Required]
         public UserRole Role { get; set; } = UserRole.User;
+        public Wallet Wallet { get; set; }=new Wallet();
         public bool HasWallet { get; set; } = false;
 
     }

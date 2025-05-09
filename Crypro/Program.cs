@@ -17,6 +17,7 @@ builder.Services.AddHostedService<CryptoDataService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddHostedService<Startup>();
+builder.Services.AddScoped<IWalletService, WalletService>();
 
 builder.Services.AddControllers();
 var Jwt = builder.Configuration.GetSection("JwtSettings");

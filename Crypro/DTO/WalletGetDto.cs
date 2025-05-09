@@ -12,4 +12,8 @@
         public double Amount { get; set; }
         
     }
+    public class AddToBalanceDto 
+    {
+        public double Amount { get; set; }
+    }
 }

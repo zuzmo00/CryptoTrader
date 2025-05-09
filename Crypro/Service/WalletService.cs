@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Crypro.Context;
 using Crypro.DTO;
+using Crypro.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crypro.Service
@@ -9,8 +10,9 @@ namespace Crypro.Service
 
     public interface IWalletService
     {
-        // Define methods for wallet management
         Task<WalletGetDto> GetWallet(string id);
+        Task<string> AddToBalance(Guid id, AddToBalanceDto addToBalanceDto);
+        Task<string> DeleteWallet(Guid id);
     }
     public class WalletService : IWalletService
     {
@@ -21,6 +23,30 @@ namespace Crypro.Service
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+        public async Task<string> AddToBalance(Guid id, AddToBalanceDto addToBalanceDto)
+        {
+            var Wallet = await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == id) ?? throw new Exception($"Nincs iylen felhasználó");
+            Wallet.Balance += addToBalanceDto.Amount;
+            _dbContext.Wallets.Update(Wallet);
+            await _dbContext.SaveChangesAsync();
+            return $"A feltöltés sikeres {Wallet.Balance}";
+        }
+
+        public async Task<string> DeleteWallet(Guid id)
+        {
+            var wallet = await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == id);
+            if (wallet == null)
+            {
+                throw new Exception($"Wallet not found with id: {id}");
+            }
+            else
+            {
+                _dbContext.Wallets.Remove(wallet);
+                await _dbContext.SaveChangesAsync();
+                return $"Wallet with id: {id} deleted successfully";
+            }
         }
 
         public async Task<WalletGetDto> GetWallet(string id)

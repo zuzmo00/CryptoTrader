@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models; // Added this to resolve UseSwaggerUI
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 using System.Text; // Added this to resolve AddSwaggerGen
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ builder.Services.AddHostedService<CryptoDataService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<IWalletService, WalletService>();
+builder.Services.AddScoped<ICryptoManagerService, CryptoManagerService>();
+builder.Services.AddScoped<ICryptoTradeService, CryptoTradeService>();
 
 builder.Services.AddControllers();
 var Jwt = builder.Configuration.GetSection("JwtSettings");
@@ -60,6 +63,8 @@ builder.Services.AddSwaggerGen(c => // Added SwaggerGen configuration
         },
         new string[] { }
     }});
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>

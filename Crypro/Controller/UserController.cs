@@ -15,6 +15,11 @@ namespace Crypro.Controller
         {
             _userService = userService;
         }
+        /// <summary>
+        /// User registration endpoint
+        /// </summary>
+        /// <param name="userCreateDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] UserCreateDto userCreateDto)

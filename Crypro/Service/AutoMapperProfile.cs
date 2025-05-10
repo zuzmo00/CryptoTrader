@@ -10,6 +10,7 @@ namespace Crypro.Service
         {
             CreateMap<UserCreateDto, User>().ReverseMap();
             CreateMap<WalletGetDto, Wallet>().ReverseMap();
+            CreateMap<CryptoGetDto,Crypto>().ReverseMap();
         }
     }
 }

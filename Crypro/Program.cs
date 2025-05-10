@@ -21,6 +21,7 @@ builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<ICryptoManagerService, CryptoManagerService>();
 builder.Services.AddScoped<ICryptoTradeService, CryptoTradeService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
+builder.Services.AddScoped<ITradeLogService, TradeLogService>();
 
 builder.Services.AddControllers();
 var Jwt = builder.Configuration.GetSection("JwtSettings");

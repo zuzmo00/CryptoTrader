@@ -108,5 +108,24 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        [HttpPut]
+        [Route("api/crypto/price")]
+        public async Task<IActionResult> UpdateCrypto([FromBody] CryptoUpdateDto cryptoUpdateDto)
+        {
+            ApiResponse response = new ApiResponse();
+            try
+            {
+                var data = await _cryptoManagerService.UpdateCrypto(cryptoUpdateDto);
+                response.Data = data;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 400;
+                response.Message = ex.Message;
+                response.Success = false;
+                return BadRequest(response);
+            }
+        }
     }
 }

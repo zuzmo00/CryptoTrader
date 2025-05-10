@@ -12,6 +12,7 @@ namespace Crypro.Service
         public Task<CryptoGetDto> GetCryptoById(Guid Cryptoid);
         public Task<Guid>CryptoCreate(CryptoCreateDto cryptoCreateDto);
         public Task<string> RemoveCrypto(Guid CryptoId);
+        public Task<string> UpdateCrypto(CryptoUpdateDto cryptoUpdateDto);
 
     }
     public class CryptoManagerService:ICryptoManagerService
@@ -50,6 +51,15 @@ namespace Crypro.Service
             _dbContext.Cryptos.Remove(crypto);
             await _dbContext.SaveChangesAsync();
             return $"Crypto with id: {CryptoId} deleted successfully";
+        }
+
+        public async Task<string> UpdateCrypto(CryptoUpdateDto cryptoUpdateDto)
+        {
+            var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id.ToString() == cryptoUpdateDto.CryptoId) ?? throw new Exception($"Crypto not found, id:{cryptoUpdateDto.CryptoId}");
+            crypto.value = cryptoUpdateDto.Value;
+            _dbContext.Cryptos.Update(crypto);
+            await _dbContext.SaveChangesAsync();
+            return $"Crypto with id: {cryptoUpdateDto.CryptoId} updated successfully";
         }
     }
 }

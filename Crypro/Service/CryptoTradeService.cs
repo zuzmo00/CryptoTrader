@@ -8,8 +8,8 @@ namespace Crypro.Service
 {
     public interface ICryptoTradeService
     {
-        Task<string> BuyCrypto(CryptoTradeDto cryptoTradeDto);
-        Task<string> SellCrypto(CryptoTradeDto cryptoTradeDto);
+        Task<string> BuyCrypto(CryptoTradeDtoToFunc cryptoTradeDto);
+        Task<string> SellCrypto(CryptoTradeDtoToFunc cryptoTradeDto);
     }
     public class CryptoTradeService : ICryptoTradeService
     {
@@ -20,10 +20,10 @@ namespace Crypro.Service
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public async Task<string> BuyCrypto(CryptoTradeDto cryptoTradeDto)
+        public async Task<string> BuyCrypto(CryptoTradeDtoToFunc cryptoTradeDto)
         {
-            var user = _dbContext.Users.Include(x => x.Wallet).FirstOrDefault(x => x.Id == cryptoTradeDto.UserId) ?? throw new Exception($"User not found with id: {cryptoTradeDto.UserId}");
-            var crypto = _dbContext.Cryptos.FirstOrDefault(x => x.Id == cryptoTradeDto.CryproId) ?? throw new Exception($"Crypto not found with id: {cryptoTradeDto.CryproId}");
+            var user = _dbContext.Users.Include(x => x.Wallet).FirstOrDefault(x => x.Id.ToString() == cryptoTradeDto.UserId) ?? throw new Exception($"User not found with id: {cryptoTradeDto.UserId}");
+            var crypto = _dbContext.Cryptos.FirstOrDefault(x => x.Id.ToString() == cryptoTradeDto.CryptoId) ?? throw new Exception($"Crypto not found with id: {cryptoTradeDto.CryptoId}");
             double totalCost = cryptoTradeDto.Amount * crypto.value;
             if (user != null && crypto != null)
             {
@@ -46,7 +46,7 @@ namespace Crypro.Service
                             Value = crypto.value,
 
                         };
-                        var tranLog= new TradeLog
+                        var tranLog = new TradeLog
                         {
                             CryptoId = crypto.Id,
                             Amount = cryptoTradeDto.Amount,
@@ -97,9 +97,43 @@ namespace Crypro.Service
             }
         }
 
-        public Task<string> SellCrypto(CryptoTradeDto cryptoTradeDto )
+        public async Task<string> SellCrypto(CryptoTradeDtoToFunc cryptoTradeDto)
         {
-            throw new NotImplementedException();
+            var user = await _dbContext.Users.Include(x => x.Wallet).FirstOrDefaultAsync(x => x.Id.ToString() == cryptoTradeDto.UserId) ?? throw new Exception($"User not found with id: {cryptoTradeDto.UserId}");
+            var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id.ToString() == cryptoTradeDto.CryptoId) ?? throw new Exception($"Crypto not found with id: {cryptoTradeDto.CryptoId}");
+            if (user != null && crypto != null)
+            {
+                var cryptoPocket = await _dbContext.CryptoPockets.FirstOrDefaultAsync(x => x.WalletId == user.Wallet.Id && x.CryptoId == crypto.Id) ?? throw new Exception($"Crypto pocket not found with id: {cryptoTradeDto.CryptoId}");
+                if (cryptoPocket.Amount < cryptoTradeDto.Amount)
+                {
+                    throw new Exception($"Not enough crypto in wallet");
+                }
+                else
+                {
+                    var wallet = await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == user.Id) ?? throw new Exception($"Wallet not found with id: {user.Id}");
+                    double totalCost = cryptoTradeDto.Amount * crypto.value;
+                    cryptoPocket.Amount -= cryptoTradeDto.Amount;
+                    var tranLog = new TradeLog
+                    {
+                        CryptoId = crypto.Id,
+                        Amount = cryptoTradeDto.Amount,
+                        UserId = user.Id,
+                        Date = DateTime.UtcNow,
+                        Value = crypto.value,
+                        IsBuy = false,
+                    };
+                    wallet.Balance += totalCost;
+                    _dbContext.Wallets.Update(wallet);
+                    _dbContext.CryptoPockets.Update(cryptoPocket);
+                    await _dbContext.TradeLogs.AddAsync(tranLog);
+                    await _dbContext.SaveChangesAsync();
+                    return $"Crypto sold successfully, remaining balance: {user.Wallet.Balance}";
+                }
+            }
+            else
+            {
+                throw new Exception($"User or crypto not found");
+            }
         }
     }
 }

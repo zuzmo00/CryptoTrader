@@ -1,6 +1,8 @@
 ﻿
 using Crypro.Context;
+using Crypro.DTO;
 using Crypro.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
 using System.Text.Json;
 
@@ -99,6 +101,7 @@ namespace Crypro.Service
                             }
                         }
                         await dbContext.SaveChangesAsync(stoppingToken);
+                        await DummyDataInsert();
                     }
                 }
                 catch (Exception ex)
@@ -110,6 +113,71 @@ namespace Crypro.Service
                     await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
                 }
             }
+        }
+
+
+
+
+        public async Task<bool> DummyDataInsert()
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var _context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var userService = scope.ServiceProvider.GetService<IUserService>();
+                var cryptoTradeService = scope.ServiceProvider.GetService<ICryptoTradeService>();
+                var cryptoList = await _context.Cryptos.ToListAsync();
+                var random = new Random();
+
+                var jsondata = JsonSerializer.Deserialize<List<UserCreateDto>>(File.ReadAllText("./TestDatas/Datas.json"));
+                if (jsondata == null)
+                {
+                    throw new Exception("Error occurred while inserting Dummy data");
+                }
+
+                for (int i = 0; i < jsondata.Count; i++)
+                {
+                    User createdUser;
+
+                    if (i == 1)
+                    {
+                        var user = await userService.CreateAdmin(jsondata[i]);
+                        createdUser = await _context.Users.FindAsync(user); 
+                    }
+                    else
+                    {
+                        var userId = await userService.CreateUserAsync(jsondata[i]);
+                        createdUser = await _context.Users.FindAsync(userId); 
+                    }
+
+
+                    if (createdUser == null)
+                    {
+                        throw new Exception("Failed to create or retrieve the user.");
+                    }
+
+                    var cryptoAmountForSold = random.NextDouble() * 32 + 1;
+
+                    await cryptoTradeService.BuyCrypto(new CryptoTradeDtoToFunc
+                    {
+                        UserId = createdUser.Id.ToString(),
+                        CryptoId = cryptoList[i].Id.ToString(),
+                        Amount = ((double)(i) + cryptoAmountForSold) / 10000
+                    });
+                    await cryptoTradeService.BuyCrypto(new CryptoTradeDtoToFunc
+                    {
+                        UserId = createdUser.Id.ToString(),
+                        CryptoId = cryptoList[i + 1].Id.ToString(),
+                        Amount = ((double)(i) + (random.NextDouble() * 32 + 1)) / 10000
+                    });
+                    await cryptoTradeService.SellCrypto(new CryptoTradeDtoToFunc
+                    {
+                        UserId = createdUser.Id.ToString(),
+                        CryptoId = cryptoList[i].Id.ToString(),
+                        Amount = ((double)(i) + cryptoAmountForSold) / 11521
+                    });
+                }
+            }
+            return true;
         }
     }
 }

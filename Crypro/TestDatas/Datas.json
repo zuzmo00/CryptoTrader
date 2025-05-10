@@ -1,0 +1,27 @@
+[
+  {
+    "UserName": "Mohammad_Adrian",
+    "Email": "adrian@example.com",
+    "Password": "string"
+  },
+  {
+    "UserName": "Szep_Jozsef",
+    "Email": "jozsi@samplemail.com",
+    "Password": "string"
+  },
+  {
+    "UserName": "Anna_Maria",
+    "Email": "anna@example.org",
+    "Password": "string"
+  },
+  {
+    "UserName": "Varga_Zsolt",
+    "Email": "zsolt@domain.net",
+    "Password": "string"
+  },
+  {
+    "UserName": "Maglodi_Peter",
+    "Email": "peter@cybermail.com",
+    "Password": "string"
+  }
+]

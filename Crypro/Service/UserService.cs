@@ -38,7 +38,7 @@ namespace Crypro.Service
 
         public async Task<Guid> CreateAdmin(UserCreateDto userCreateDto)
         {
-            var email = _dbContext.Users.FirstOrDefault(x=>x.Email==userCreateDto.Email);
+            var email = await _dbContext.Users.FirstOrDefaultAsync(x=>x.Email==userCreateDto.Email);
             if (email != null)
             {
                 throw new Exception("User already exists");
@@ -55,7 +55,7 @@ namespace Crypro.Service
 
         public async Task<Guid> CreateUserAsync(UserCreateDto userCreateDto)
         {
-            var email= _dbContext.Users.FirstOrDefault(x => x.Email == userCreateDto.Email);
+            var email= await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userCreateDto.Email);
             if (email != null)
             {
                 throw new Exception("User already exists");
@@ -83,7 +83,7 @@ namespace Crypro.Service
 
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            var user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 throw new Exception($"User with id {userId} not found");

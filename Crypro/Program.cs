@@ -1,6 +1,7 @@
 using Crypro.Context;
 using Crypro.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +23,8 @@ builder.Services.AddScoped<ICryptoManagerService, CryptoManagerService>();
 builder.Services.AddScoped<ICryptoTradeService, CryptoTradeService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<ITradeLogService, TradeLogService>();
+builder.Services.AddScoped<IProfitService, ProfitService>();
+
 
 builder.Services.AddControllers();
 var Jwt = builder.Configuration.GetSection("JwtSettings");

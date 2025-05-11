@@ -27,13 +27,16 @@ namespace Crypro.Controller
         /// <returns></returns>
         [HttpPost]
         [Route("api/trade/buy")]
-        public async Task<IActionResult> BuyCrypto([FromBody] CryptoTradeDtoToFunc cryptoTradeDto)
+        public async Task<IActionResult> BuyCrypto([FromBody] CryptoTradeDto cryptoTradeDto)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _cryptoTradeService.BuyCrypto(cryptoTradeDto);
-                response.Data = data;
+                var id = User.Claims.First(x=>x.Type==ClaimTypes.NameIdentifier).Value.ToString();
+                var data = _mapper.Map<CryptoTradeDtoToFunc>(cryptoTradeDto);
+                data.UserId = id;
+                var reault = await _cryptoTradeService.BuyCrypto(data);
+                response.Data = reault;
                 return Ok(response);
             }
             catch (Exception ex)
@@ -44,6 +47,11 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// Sell Crypto
+        /// </summary>
+        /// <param name="cryptoTradeDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/trade/sell")]
         [Authorize(Roles ="User")]

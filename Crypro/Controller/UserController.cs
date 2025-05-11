@@ -39,8 +39,14 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// User update endpoint
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userUpdateDto"></param>
+        /// <returns></returns>
         [HttpPut]
-        [Route("Delete/{id}")]
+        [Route("Update/{id}")]
         public async Task<IActionResult> UpdateUser(Guid id,[FromBody] UserUodateDto userUpdateDto)
         {
             ApiResponse response = new ApiResponse();
@@ -58,6 +64,11 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        ///  Delete user by id endpoint
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("Delete/{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
@@ -77,6 +88,11 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// Get user by id endpoint
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("Get/{id}")]
         public async Task<IActionResult> GetUser(Guid id)
@@ -102,6 +118,11 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// User login endpoint
+        /// </summary>
+        /// <param name="userLoginDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)

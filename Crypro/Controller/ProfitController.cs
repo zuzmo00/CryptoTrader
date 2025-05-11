@@ -11,6 +11,11 @@ namespace Crypro.Controller
         {
             _profitService = profitService;
         }
+        /// <summary>
+        /// All profit endpoint
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/profit/{userId}")]
         public async Task<IActionResult> GetProfit(string userId)
@@ -30,6 +35,11 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// Get profit by crypto endpoint
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/profit/details/{userId}")]
         public async Task<IActionResult> GetProfitDetails(string userId)

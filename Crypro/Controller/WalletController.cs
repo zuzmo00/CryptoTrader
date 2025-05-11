@@ -14,6 +14,11 @@ namespace Crypro.Controller
         {
             _walletService = walletService;
         }
+        /// <summary>
+        /// Get wallet endpoint
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("/api/wallet/{userId}")]
         public async Task<IActionResult> GetWallet(string userid)
@@ -33,6 +38,12 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// Add to balance endpoint
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="addToBalanceDto"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("/api/wallet/{userId}")]
         public async Task<IActionResult> AddToBalance(Guid userId, AddToBalanceDto addToBalanceDto)
@@ -52,6 +63,11 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// Delete wallet endpoint
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("api/wallet/{userId}")]
         public async Task<IActionResult> DeleteWallet(Guid userId)

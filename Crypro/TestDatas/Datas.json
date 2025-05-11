@@ -1,26 +1,26 @@
 [
   {
-    "UserName": "Mohammad_Adrian",
+    "Name": "Mohammad Adrian",
     "Email": "adrian@example.com",
     "Password": "string"
   },
   {
-    "UserName": "Szep_Jozsef",
+    "Name": "Szep Jozsef",
     "Email": "jozsi@samplemail.com",
     "Password": "string"
   },
   {
-    "UserName": "Anna_Maria",
+    "Name": "Anna Maria",
     "Email": "anna@example.org",
     "Password": "string"
   },
   {
-    "UserName": "Varga_Zsolt",
+    "Name": "Varga Zsolt",
     "Email": "zsolt@domain.net",
     "Password": "string"
   },
   {
-    "UserName": "Maglodi_Peter",
+    "Name": "Maglodi Peter",
     "Email": "peter@cybermail.com",
     "Password": "string"
   }

@@ -108,6 +108,11 @@ namespace Crypro.Controller
                 return BadRequest(response);
             }
         }
+        /// <summary>
+        /// Update crypto price
+        /// </summary>
+        /// <param name="cryptoUpdateDto"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("api/crypto/price")]
         public async Task<IActionResult> UpdateCrypto([FromBody] CryptoUpdateDto cryptoUpdateDto)

@@ -99,9 +99,11 @@ namespace Crypro.Service
                                 await dbContext.Cryptos.AddAsync(crypto, stoppingToken);
                                 await dbContext.ValueLogs.AddAsync(log, stoppingToken);
                             }
+                            
+                            await DummyDataInsert();
                         }
                         await dbContext.SaveChangesAsync(stoppingToken);
-                        await DummyDataInsert();
+
                     }
                 }
                 catch (Exception ex)

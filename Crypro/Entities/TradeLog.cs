@@ -2,6 +2,7 @@
 
 namespace Crypro.Entities
 {
+   
     public class TradeLog
     {
         [Required, Key]

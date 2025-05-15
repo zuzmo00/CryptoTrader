@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Crypro.Migrations
 {
     /// <inheritdoc />
-    public partial class kk : Migration
+    public partial class limited3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,6 +22,55 @@ namespace Crypro.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cryptos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LimitedTransactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CryptoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Limit = table.Column<double>(type: "float", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LimitedTransactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LimitLogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CryptoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Limit = table.Column<double>(type: "float", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TradeType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LimitLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TradeLogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CryptoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<double>(type: "float", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    IsBuy = table.Column<bool>(type: "bit", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TradeType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TradeLogs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +114,12 @@ namespace Crypro.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Wallets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Wallets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,6 +158,12 @@ namespace Crypro.Migrations
                 name: "IX_CryptoPockets_WalletId",
                 table: "CryptoPockets",
                 column: "WalletId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wallets_UserId",
+                table: "Wallets",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -112,7 +173,13 @@ namespace Crypro.Migrations
                 name: "CryptoPockets");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "LimitedTransactions");
+
+            migrationBuilder.DropTable(
+                name: "LimitLogs");
+
+            migrationBuilder.DropTable(
+                name: "TradeLogs");
 
             migrationBuilder.DropTable(
                 name: "ValueLogs");
@@ -122,6 +189,9 @@ namespace Crypro.Migrations
 
             migrationBuilder.DropTable(
                 name: "Wallets");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

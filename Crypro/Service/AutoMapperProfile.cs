@@ -16,6 +16,12 @@ namespace Crypro.Service
             CreateMap<PortfolioDto,CryptoPocket>().ReverseMap();
             CreateMap<TransactionGetAllByUserDto, TradeLog>().ReverseMap();
             CreateMap<TradeLog, TransactinGetByTransactionId>().ReverseMap();
+            CreateMap<LimitBuyDto, LimitedTransaction>().ReverseMap();
+            CreateMap<LimitSellDto, LimitedTransaction>().ReverseMap();
+            CreateMap<LimitBuyDto, LimitLog>().ReverseMap();
+            CreateMap<LimitSellDto, LimitLog>().ReverseMap();
+            CreateMap<LimitGetDto, LimitedTransaction>().ReverseMap();
+            CreateMap<LimitGetDto, LimitLog>().ReverseMap();
         }
     }
 }

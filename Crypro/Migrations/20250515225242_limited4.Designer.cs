@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Crypro.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250506101036_kk")]
-    partial class kk
+    [Migration("20250515225242_limited4")]
+    partial class limited4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,87 @@ namespace Crypro.Migrations
                     b.HasIndex("WalletId");
 
                     b.ToTable("CryptoPockets");
+                });
+
+            modelBuilder.Entity("Crypro.Entities.LimitLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CryptoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Limit")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LimitLogs");
+                });
+
+            modelBuilder.Entity("Crypro.Entities.LimitedTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CryptoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Limit")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LimitedTransactions");
+                });
+
+            modelBuilder.Entity("Crypro.Entities.TradeLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("CryptoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBuy")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.Property<int>("type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TradeLogs");
                 });
 
             modelBuilder.Entity("Crypro.Entities.User", b =>
@@ -133,6 +214,9 @@ namespace Crypro.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Wallets");
                 });
 
@@ -153,6 +237,21 @@ namespace Crypro.Migrations
                     b.Navigation("Crypto");
 
                     b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("Crypro.Entities.Wallet", b =>
+                {
+                    b.HasOne("Crypro.Entities.User", null)
+                        .WithOne("Wallet")
+                        .HasForeignKey("Crypro.Entities.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Crypro.Entities.User", b =>
+                {
+                    b.Navigation("Wallet")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Crypro.Entities.Wallet", b =>

@@ -24,6 +24,7 @@ builder.Services.AddScoped<ICryptoTradeService, CryptoTradeService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<ITradeLogService, TradeLogService>();
 builder.Services.AddScoped<IProfitService, ProfitService>();
+builder. Services.AddScoped<ILimitdService, LimitedService>();
 
 
 builder.Services.AddControllers();

@@ -12,6 +12,8 @@ namespace Crypro.Context
         public DbSet<CryptoPocket> CryptoPockets { get; set; }
         public DbSet<ValueLog> ValueLogs { get; set; }
         public DbSet<TradeLog> TradeLogs { get; set; }
+        public DbSet<LimitedTransaction> LimitedTransactions { get; set; }
+        public DbSet<LimitLog> LimitLogs { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

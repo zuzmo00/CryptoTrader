@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Crypro.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250510205559_firstTest")]
-    partial class firstTest
+    [Migration("20250515225446_limited5")]
+    partial class limited5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,55 @@ namespace Crypro.Migrations
                     b.ToTable("CryptoPockets");
                 });
 
+            modelBuilder.Entity("Crypro.Entities.LimitLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CryptoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Limit")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LimitLogs");
+                });
+
+            modelBuilder.Entity("Crypro.Entities.LimitedTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CryptoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Limit")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LimitedTransactions");
+                });
+
             modelBuilder.Entity("Crypro.Entities.TradeLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -93,6 +142,9 @@ namespace Crypro.Migrations
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
+
+                    b.Property<int>("type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

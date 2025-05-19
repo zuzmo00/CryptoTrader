@@ -25,7 +25,7 @@ namespace Crypro.Service
 
         public async Task<string> CancelLimit(Guid Id)
         {
-            var limit= await _dbContext.LimitedTransactions.FirstOrDefaultAsync(x => x.Id == Id);
+            var limit= await _dbContext.LimitedTransactions.FirstOrDefaultAsync(x => x.Id == Id)?? throw new Exception("Limit not found");
              _dbContext.LimitedTransactions.Remove(limit);
             await _dbContext.SaveChangesAsync();
             return "Limit Order Canceled";
@@ -33,6 +33,13 @@ namespace Crypro.Service
 
         public async Task<string> LimitBuy(LimitBuyDto limitBuyDto)
         {
+            var wallet= await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == limitBuyDto.UserId) ?? throw new Exception("User not found");
+            var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id == limitBuyDto.CryptoId) ?? throw new Exception("Crypto not found");
+            var price= limitBuyDto.Limit * limitBuyDto.Amount;
+            if (wallet.Balance < price)
+            {
+                throw new Exception("Not enough balance");
+            }
             var LimitedBuy = _mapper.Map<LimitedTransaction>(limitBuyDto);
             LimitedBuy.Type =TradeType.Buy;
             var log=_mapper.Map<LimitLog>(limitBuyDto);
@@ -45,6 +52,18 @@ namespace Crypro.Service
 
         public async Task<string> LimitSell(LimitSellDto limitSellDto)
         {
+            var wallet = await _dbContext.Wallets
+                .Include(x => x.CryptoPockets)
+                .FirstOrDefaultAsync(x => x.UserId == limitSellDto.UserId) ?? throw new Exception("User not found");
+            if(wallet.CryptoPockets == null)
+            {
+                throw new Exception("No crypto found");
+            }
+            var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id == limitSellDto.CryptoId) ?? throw new Exception("Crypto not found");
+            if(limitSellDto.Amount > wallet.CryptoPockets.FirstOrDefault(x => x.CryptoId == limitSellDto.CryptoId).Amount)
+            {
+                throw new Exception("Not enough crypto");
+            }
             var LimitedSell = _mapper.Map<LimitedTransaction>(limitSellDto);
             LimitedSell.Type = TradeType.Sell;
             var log = _mapper.Map<LimitLog>(limitSellDto);

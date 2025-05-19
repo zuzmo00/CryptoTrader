@@ -100,7 +100,7 @@ namespace Crypro.Service
                                 await dbContext.ValueLogs.AddAsync(log, stoppingToken);
                                 await dbContext.SaveChangesAsync(stoppingToken);
                             }
-                            
+
                             await DummyDataInsert();
                         }
                         await dbContext.SaveChangesAsync(stoppingToken);
@@ -144,12 +144,12 @@ namespace Crypro.Service
                     if (i == 1)
                     {
                         var user = await userService.CreateAdmin(jsondata[i]);
-                        createdUser = await _context.Users.FindAsync(user); 
+                        createdUser = await _context.Users.FindAsync(user);
                     }
                     else
                     {
                         var userId = await userService.CreateUserAsync(jsondata[i]);
-                        createdUser = await _context.Users.FindAsync(userId); 
+                        createdUser = await _context.Users.FindAsync(userId);
                     }
 
 

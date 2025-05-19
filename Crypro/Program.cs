@@ -1,3 +1,4 @@
+using Crypro.AddService;
 using Crypro.Context;
 using Crypro.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,18 +14,7 @@ using System.Text; // Added this to resolve AddSwaggerGen
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHttpClient();
-builder.Services.AddHostedService<CryptoDataService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-builder.Services.AddScoped<IWalletService, WalletService>();
-builder.Services.AddScoped<ICryptoManagerService, CryptoManagerService>();
-builder.Services.AddScoped<ICryptoTradeService, CryptoTradeService>();
-builder.Services.AddScoped<IPortfolioService, PortfolioService>();
-builder.Services.AddScoped<ITradeLogService, TradeLogService>();
-builder.Services.AddScoped<IProfitService, ProfitService>();
-builder. Services.AddScoped<ILimitdService, LimitedService>();
+builder.Services.AddServicess();
 
 
 builder.Services.AddControllers();

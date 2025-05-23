@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Crypro.Controller
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class WalletController : ControllerBase
     {
         private readonly IWalletService _walletService;

@@ -20,6 +20,7 @@ namespace Crypro.Entities
         [Required]
         public UserRole Role { get; set; } = UserRole.User;
         public Wallet Wallet { get; set; }=new Wallet();
+        public FeeLog list { get; set; } = new FeeLog();
         public bool HasWallet { get; set; } = false;
 
     }

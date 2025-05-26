@@ -20,12 +20,12 @@ namespace Crypro.Controller
         /// <returns></returns>
         [HttpGet]
         [Route("/api/wallet/{userId}")]
-        public async Task<IActionResult> GetWallet(string userid)
+        public async Task<IActionResult> GetWallet(string userId)
         {
             ApiResponse response=new ApiResponse();
             try
             {
-                var data = await _walletService.GetWallet(userid);
+                var data = await _walletService.GetWallet(userId);
                 response.Data = data;
                 return Ok(response);
             }

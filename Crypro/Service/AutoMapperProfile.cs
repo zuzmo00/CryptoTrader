@@ -22,6 +22,8 @@ namespace Crypro.Service
             CreateMap<LimitSellDto, LimitLog>().ReverseMap();
             CreateMap<LimitGetDto, LimitedTransaction>().ReverseMap();
             CreateMap<LimitGetDto, LimitLog>().ReverseMap();
+            CreateMap<AddFeeDto, TransactionFee>().ReverseMap();
+
         }
     }
 }

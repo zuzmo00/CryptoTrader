@@ -4,6 +4,7 @@ using Crypro.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Crypro.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526111720_feeLog")]
+    partial class feeLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,9 +98,6 @@ namespace Crypro.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("FeeLogs");
                 });
@@ -291,15 +291,6 @@ namespace Crypro.Migrations
                     b.Navigation("Wallet");
                 });
 
-            modelBuilder.Entity("Crypro.Entities.FeeLog", b =>
-                {
-                    b.HasOne("Crypro.Entities.User", null)
-                        .WithOne("list")
-                        .HasForeignKey("Crypro.Entities.FeeLog", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Crypro.Entities.Wallet", b =>
                 {
                     b.HasOne("Crypro.Entities.User", null)
@@ -312,9 +303,6 @@ namespace Crypro.Migrations
             modelBuilder.Entity("Crypro.Entities.User", b =>
                 {
                     b.Navigation("Wallet")
-                        .IsRequired();
-
-                    b.Navigation("list")
                         .IsRequired();
                 });
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Crypro.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250526111720_feeLog")]
-    partial class feeLog
+    [Migration("20250526172057_o")]
+    partial class o
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,6 +98,9 @@ namespace Crypro.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("FeeLogs");
                 });
@@ -291,6 +294,15 @@ namespace Crypro.Migrations
                     b.Navigation("Wallet");
                 });
 
+            modelBuilder.Entity("Crypro.Entities.FeeLog", b =>
+                {
+                    b.HasOne("Crypro.Entities.User", null)
+                        .WithOne("list")
+                        .HasForeignKey("Crypro.Entities.FeeLog", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Crypro.Entities.Wallet", b =>
                 {
                     b.HasOne("Crypro.Entities.User", null)
@@ -303,6 +315,9 @@ namespace Crypro.Migrations
             modelBuilder.Entity("Crypro.Entities.User", b =>
                 {
                     b.Navigation("Wallet")
+                        .IsRequired();
+
+                    b.Navigation("list")
                         .IsRequired();
                 });
 

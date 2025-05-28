@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Crypro.Migrations
 {
     /// <inheritdoc />
-    public partial class limited3 : Migration
+    public partial class a : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,9 @@ namespace Crypro.Migrations
                     CryptoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Limit = table.Column<double>(type: "float", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,8 +49,9 @@ namespace Crypro.Migrations
                     CryptoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Limit = table.Column<double>(type: "float", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TradeType = table.Column<int>(type: "int", nullable: false)
+                    Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,12 +68,23 @@ namespace Crypro.Migrations
                     Value = table.Column<double>(type: "float", nullable: false),
                     Amount = table.Column<double>(type: "float", nullable: false),
                     IsBuy = table.Column<bool>(type: "bit", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TradeType = table.Column<int>(type: "int", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TradeLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionFees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionFees", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,6 +115,30 @@ namespace Crypro.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ValueLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FeeLogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TransactionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CryptoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    FeePercentage = table.Column<double>(type: "float", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalAmount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeeLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FeeLogs_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,6 +198,12 @@ namespace Crypro.Migrations
                 column: "WalletId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FeeLogs_UserId",
+                table: "FeeLogs",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Wallets_UserId",
                 table: "Wallets",
                 column: "UserId",
@@ -173,6 +217,9 @@ namespace Crypro.Migrations
                 name: "CryptoPockets");
 
             migrationBuilder.DropTable(
+                name: "FeeLogs");
+
+            migrationBuilder.DropTable(
                 name: "LimitedTransactions");
 
             migrationBuilder.DropTable(
@@ -180,6 +227,9 @@ namespace Crypro.Migrations
 
             migrationBuilder.DropTable(
                 name: "TradeLogs");
+
+            migrationBuilder.DropTable(
+                name: "TransactionFees");
 
             migrationBuilder.DropTable(
                 name: "ValueLogs");

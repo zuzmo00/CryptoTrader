@@ -5,7 +5,7 @@
 namespace Crypro.Migrations
 {
     /// <inheritdoc />
-    public partial class limited5 : Migration
+    public partial class o : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

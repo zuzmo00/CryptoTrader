@@ -42,6 +42,9 @@ namespace Crypro.Service
             _httpClient.DefaultRequestHeaders.Add("accept", "application/json");
             var url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,cardano,solana,polkadot,chainlink,uniswap,litecoin,dogecoin,ripple,stellar,tron,algorand,near,vechain&vs_currencies=usd";
 
+
+            
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
@@ -160,19 +163,19 @@ namespace Crypro.Service
 
                     var cryptoAmountForSold = random.NextDouble() * 32 + 1;
 
-                    await cryptoTradeService.BuyCrypto(new CryptoTradeDtoToFunc
+                    await cryptoTradeService.BuyCryptoInit(new CryptoTradeDtoToFunc
                     {
                         UserId = createdUser.Id.ToString(),
                         CryptoId = cryptoList[i].Id.ToString(),
                         Amount = ((double)(i) + cryptoAmountForSold) / 10000
                     });
-                    await cryptoTradeService.BuyCrypto(new CryptoTradeDtoToFunc
+                    await cryptoTradeService.BuyCryptoInit(new CryptoTradeDtoToFunc
                     {
                         UserId = createdUser.Id.ToString(),
                         CryptoId = cryptoList[i + 1].Id.ToString(),
                         Amount = ((double)(i) + (random.NextDouble() * 32 + 1)) / 10000
                     });
-                    await cryptoTradeService.SellCrypto(new CryptoTradeDtoToFunc
+                    await cryptoTradeService.SellCryptoInit(new CryptoTradeDtoToFunc
                     {
                         UserId = createdUser.Id.ToString(),
                         CryptoId = cryptoList[i].Id.ToString(),

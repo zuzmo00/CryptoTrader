@@ -5,8 +5,8 @@ namespace Crypro.Entities
    
     public class TradeLog
     {
-        [Required, Key]
-        public Guid Id { get; set; } = new Guid();
+        [Key]
+        public Guid Id { get; set; }
         [Required]
         public Guid CryptoId { get; set; }
         [Required]

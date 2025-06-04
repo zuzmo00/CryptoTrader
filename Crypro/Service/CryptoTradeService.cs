@@ -58,6 +58,11 @@ namespace Crypro.Service
                             Value = crypto.value,
                             IsBuy = true,
                         };
+                        wallet.Balance -= totalCost;
+                        _dbContext.Wallets.Update(wallet);
+                        await _dbContext.CryptoPockets.AddAsync(newCryptoPocket);
+                        await _dbContext.TradeLogs.AddAsync(tranLog);
+                        await _dbContext.SaveChangesAsync();
                         var feeLog = new FeeLog
                         {
                             UserId = user.Id,
@@ -68,10 +73,7 @@ namespace Crypro.Service
                             Timestamp = DateTime.UtcNow,
                             TotalAmount = totalCost
                         };
-                        wallet.Balance -= totalCost;
-                        _dbContext.Wallets.Update(wallet);
-                        await _dbContext.CryptoPockets.AddAsync(newCryptoPocket);
-                        await _dbContext.TradeLogs.AddAsync(tranLog);
+                        
                         await _dbContext.FeeLogs.AddAsync(feeLog);
                         await _dbContext.SaveChangesAsync();
                         return $"Crypto bought successfully, remaining balance: {user.Wallet.Balance}";

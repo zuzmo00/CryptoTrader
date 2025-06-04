@@ -6,7 +6,8 @@ namespace Crypro.Entities
 {
     public class CryptoPocket
     {
-        public Guid Id { get; set; } = new Guid();
+        [Key]
+        public Guid Id { get; set; }
         [ForeignKey("Wallet")]
         public Guid WalletId { get; set; }
         public Wallet Wallet { get; set; }

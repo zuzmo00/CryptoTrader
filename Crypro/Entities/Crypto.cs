@@ -4,10 +4,10 @@ namespace Crypro.Entities
 {
     public class Crypto
     {
-        [Required, Key]
-        public Guid Id { get; set; } = new Guid();
+        [Key]
+        public Guid Id { get; set; }
         [Required]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } 
         [Required]
         public double value { get; set; }
     }

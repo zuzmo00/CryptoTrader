@@ -7,7 +7,7 @@ namespace Crypro.Entities
     public class FeeLog
     {
         [Key]
-        public Guid Id { get; set; }=new Guid();
+        public Guid Id { get; set; }
         [ForeignKey("User")]
         public Guid UserId { get; set; }
         public Guid TransactionId { get; set; }

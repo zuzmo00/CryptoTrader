@@ -5,8 +5,8 @@ namespace Crypro.Entities
 {
     public class ValueLog
     {
-        [Required,Key]
-        public Guid Id { get; set; } = new Guid();
+        [Key]
+        public Guid Id { get; set; }
         [ForeignKey("Crypto")]
         public Guid CryptoId { get; set; }
         public double Value { get; set; }

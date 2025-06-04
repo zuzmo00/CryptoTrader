@@ -27,7 +27,7 @@ namespace Crypro.Service
             var fee = _dbContext.TransactionFees.First()?? throw new Exception("There is no fee available");
             var user = _dbContext.Users.Include(x => x.Wallet).FirstOrDefault(x => x.Id.ToString() == cryptoTradeDto.UserId) ?? throw new Exception($"User not found with id: {cryptoTradeDto.UserId}");
             var crypto = _dbContext.Cryptos.FirstOrDefault(x => x.Id.ToString() == cryptoTradeDto.CryptoId) ?? throw new Exception($"Crypto not found with id: {cryptoTradeDto.CryptoId}");
-            double totalCost = (cryptoTradeDto.Amount * crypto.value)*fee.Amount;
+            double totalCost = (cryptoTradeDto.Amount * crypto.value) * (1 + fee.Amount / 100.0);
             if (user != null && crypto != null)
             {
                 var cryptoPocket = _dbContext.CryptoPockets.FirstOrDefaultAsync(x => x.WalletId == user.Wallet.Id && x.CryptoId == crypto.Id).Result;
@@ -62,7 +62,6 @@ namespace Crypro.Service
                         _dbContext.Wallets.Update(wallet);
                         await _dbContext.CryptoPockets.AddAsync(newCryptoPocket);
                         await _dbContext.TradeLogs.AddAsync(tranLog);
-                        await _dbContext.SaveChangesAsync();
                         var feeLog = new FeeLog
                         {
                             UserId = user.Id,
@@ -98,6 +97,11 @@ namespace Crypro.Service
                             Value = crypto.value,
                             IsBuy = true,
                         };
+                        wallet.Balance -= totalCost;
+                        _dbContext.Wallets.Update(wallet);
+                        _dbContext.CryptoPockets.Update(cryptoPocket);
+                        await _dbContext.TradeLogs.AddAsync(tranLog);
+                        
                         var feeLog = new FeeLog
                         {
                             UserId = user.Id,
@@ -108,10 +112,6 @@ namespace Crypro.Service
                             Timestamp = DateTime.UtcNow,
                             TotalAmount = totalCost
                         };
-                        wallet.Balance -= totalCost;
-                        _dbContext.Wallets.Update(wallet);
-                        _dbContext.CryptoPockets.Update(cryptoPocket);
-                        await _dbContext.TradeLogs.AddAsync(tranLog);
                         await _dbContext.FeeLogs.AddAsync(feeLog);
                         await _dbContext.SaveChangesAsync();
                         return $"Crypto bought successfully, remaining balance: {user.Wallet.Balance}";
@@ -139,7 +139,7 @@ namespace Crypro.Service
                 else
                 {
                     var wallet = await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == user.Id) ?? throw new Exception($"Wallet not found with id: {user.Id}");
-                    double totalCost = (cryptoTradeDto.Amount * crypto.value)- (cryptoTradeDto.Amount * crypto.value)*1-fee.Amount;
+                    double totalCost = cryptoTradeDto.Amount * crypto.value * (1 - fee.Amount / 100.0);
                     cryptoPocket.Amount -= cryptoTradeDto.Amount;
                     var tranLog = new TradeLog
                     {
@@ -150,6 +150,10 @@ namespace Crypro.Service
                         Value = crypto.value,
                         IsBuy = false,
                     };
+                    wallet.Balance += totalCost;
+                    _dbContext.Wallets.Update(wallet);
+                    _dbContext.CryptoPockets.Update(cryptoPocket);
+                    await _dbContext.TradeLogs.AddAsync(tranLog);
                     var feeLog = new FeeLog
                     {
                         UserId = user.Id,
@@ -160,10 +164,7 @@ namespace Crypro.Service
                         Timestamp = DateTime.UtcNow,
                         TotalAmount = totalCost
                     };
-                    wallet.Balance += totalCost;
-                    _dbContext.Wallets.Update(wallet);
-                    _dbContext.CryptoPockets.Update(cryptoPocket);
-                    await _dbContext.TradeLogs.AddAsync(tranLog);
+                    
                     await _dbContext.FeeLogs.AddAsync(feeLog);
                     await _dbContext.SaveChangesAsync();
                     return $"Crypto sold successfully, remaining balance: {user.Wallet.Balance}";

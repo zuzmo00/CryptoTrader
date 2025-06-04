@@ -23,7 +23,21 @@ namespace Crypro.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Wallet)
+                .WithOne(w => w.User)
+                .HasForeignKey<Wallet>(w => w.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Wallet>()
+                .HasMany(w => w.CryptoPockets)
+                .WithOne(cp => cp.Wallet)
+                .HasForeignKey(cp => cp.WalletId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Crypto>()
+                .HasMany(c => c.CryptoPocket)
+                .WithOne(cp => cp.Crypto)
+                .HasForeignKey(cp => cp.CryptoId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

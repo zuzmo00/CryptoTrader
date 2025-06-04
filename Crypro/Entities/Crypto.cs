@@ -10,5 +10,6 @@ namespace Crypro.Entities
         public string Name { get; set; } 
         [Required]
         public double value { get; set; }
+        public List<CryptoPocket> CryptoPocket { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace Crypro.Entities
 
         [Required]
         public double Balance { get; set; } = 1000.0;
+        public User User { get; set; }
 
         public List<CryptoPocket> CryptoPockets { get; set; } = new List<CryptoPocket>();
     }

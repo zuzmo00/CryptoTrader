@@ -13,7 +13,7 @@ namespace Crypro.Entities
         public Guid TransactionId { get; set; }
         public Guid CryptoId { get; set; }
         public double Amount { get; set; }
-        public double FeePercentage { get; set; } = 0.2; // Default fee of 0.2%
+        public double FeePercentage { get; set; } = 2; // Default fee of 0.02%
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public double TotalAmount { get; set; }
     }

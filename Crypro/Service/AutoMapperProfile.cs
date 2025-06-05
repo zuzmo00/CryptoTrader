@@ -24,6 +24,8 @@ namespace Crypro.Service
             CreateMap<LimitGetDto, LimitLog>().ReverseMap();
             CreateMap<AddFeeDto, TransactionFee>().ReverseMap();
             CreateMap<CryptoPocket, PortfolioDto>().ReverseMap();
+            CreateMap<LimitBuyDto, LimitBuyDtoToController>().ReverseMap();
+            CreateMap<LimitSellDto, LimitSellDtoToController>().ReverseMap();
 
         }
     }

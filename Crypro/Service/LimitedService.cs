@@ -8,10 +8,10 @@ namespace Crypro.Service
 {
     public interface ILimitdService
     {
-        Task<string>LimitBuy(LimitBuyDto limitBuyDto);
-        Task<string> LimitSell(LimitSellDto limitSellDto);
-        Task<List<LimitGetDto>> ListLimits(Guid Id);
-        Task<string> CancelLimit(Guid Id);
+        Task<string>LimitBuyAsync(LimitBuyDto limitBuyDto);
+        Task<string> LimitSellAsync(LimitSellDto limitSellDto);
+        Task<List<LimitGetDto>> ListLimitsAsync(Guid Id);
+        Task<string> CancelLimitAsync(Guid Id);
     }
     public class LimitedService : ILimitdService
     {
@@ -23,7 +23,7 @@ namespace Crypro.Service
             _mapper = mapper;
         }
 
-        public async Task<string> CancelLimit(Guid Id)
+        public async Task<string> CancelLimitAsync(Guid Id)
         {
             var limit= await _dbContext.LimitedTransactions.FirstOrDefaultAsync(x => x.Id == Id)?? throw new Exception("Limit not found");
              _dbContext.LimitedTransactions.Remove(limit);
@@ -31,7 +31,7 @@ namespace Crypro.Service
             return "Limit Order Canceled";
         }
 
-        public async Task<string> LimitBuy(LimitBuyDto limitBuyDto)
+        public async Task<string> LimitBuyAsync(LimitBuyDto limitBuyDto)
         {
             var wallet= await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == limitBuyDto.UserId) ?? throw new Exception("User not found");
             var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id == limitBuyDto.CryptoId) ?? throw new Exception("Crypto not found");
@@ -50,7 +50,7 @@ namespace Crypro.Service
             return "Limit Buy Order Created"; 
         }
 
-        public async Task<string> LimitSell(LimitSellDto limitSellDto)
+        public async Task<string> LimitSellAsync(LimitSellDto limitSellDto)
         {
             var wallet = await _dbContext.Wallets
                 .Include(x => x.CryptoPockets)
@@ -74,7 +74,7 @@ namespace Crypro.Service
             return "Limit Sell Order Created";
         }
 
-        public async Task<List<LimitGetDto>> ListLimits(Guid UserId)
+        public async Task<List<LimitGetDto>> ListLimitsAsync(Guid UserId)
         {
             var limits = await _dbContext.LimitedTransactions
                 .Where(x => x.UserId == UserId)

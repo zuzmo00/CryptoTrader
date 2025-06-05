@@ -6,8 +6,8 @@ namespace Crypro.Service
 {
     public interface IProfitService
     {
-        Task<double> GetUserProfit(string userId);
-        Task<List<ProfitDto>> GetProfitByCrypto(string userId);
+        Task<double> GetUserProfitAsync(string userId);
+        Task<List<ProfitDto>> GetProfitByCryptoAsync(string userId);
     }
     public class ProfitService : IProfitService
     {
@@ -17,7 +17,7 @@ namespace Crypro.Service
             _dbContext = dbContext;
         }
 
-        public async Task<List<ProfitDto>> GetProfitByCrypto(string userId)
+        public async Task<List<ProfitDto>> GetProfitByCryptoAsync(string userId)
         {
             List<ProfitDto> profit = new List<ProfitDto>();
             var wallet = await _dbContext.Wallets
@@ -39,7 +39,7 @@ namespace Crypro.Service
             return profit;
         }
 
-        public async Task<double> GetUserProfit(string userId)
+        public async Task<double> GetUserProfitAsync(string userId)
         {
             var wallet = await _dbContext.Wallets
             .Include(x => x.CryptoPockets)

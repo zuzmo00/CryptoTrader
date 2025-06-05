@@ -26,7 +26,7 @@ namespace Crypro.Controller
         /// <param name="cryptoTradeDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/trade/buy")]
+        [Route("buy")]
         public async Task<IActionResult> BuyCrypto([FromBody] CryptoTradeDto cryptoTradeDto)
         {
             ApiResponse response = new ApiResponse();
@@ -35,7 +35,7 @@ namespace Crypro.Controller
                 var id = User.Claims.First(x=>x.Type==ClaimTypes.NameIdentifier).Value.ToString();
                 var data = _mapper.Map<CryptoTradeDtoToFunc>(cryptoTradeDto);
                 data.UserId = id;
-                var reault = await _cryptoTradeService.BuyCrypto(data);
+                var reault = await _cryptoTradeService.BuyCryptoAsync(data);
                 response.Data = reault;
                 return Ok(response);
             }
@@ -53,7 +53,7 @@ namespace Crypro.Controller
         /// <param name="cryptoTradeDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/trade/sell")]
+        [Route("sell")]
         [Authorize(Roles ="User")]
         public async Task<IActionResult> SellCrypto([FromBody] CryptoTradeDto cryptoTradeDto)
         {
@@ -63,7 +63,7 @@ namespace Crypro.Controller
                 var id= User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value.ToString();
                 var data = _mapper.Map<CryptoTradeDtoToFunc>(cryptoTradeDto);
                 data.UserId =id;
-                var result = await _cryptoTradeService.SellCrypto(data);
+                var result = await _cryptoTradeService.SellCryptoAsync(data);
                 response.Data = result;
                 return Ok(response);
             }

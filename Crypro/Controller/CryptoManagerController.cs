@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Crypro.Controller
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class CryptoManagerController: ControllerBase
     {
         private readonly ICryptoManagerService _cryptoManagerService;
@@ -18,13 +19,13 @@ namespace Crypro.Controller
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/cryptos)")]
+        [Route("list")]
         public async Task<IActionResult> ListCryptos()
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _cryptoManagerService.ListCryptos();
+                var data = await _cryptoManagerService.ListCryptosAsync();
                 response.Data = data;
                 return Ok(response);
             }
@@ -42,13 +43,13 @@ namespace Crypro.Controller
         /// <param name="cryptoId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/cryptos/{cryptoId}")]
+        [Route("{cryptoId}")]
         public async Task<IActionResult> GetCryptoById(Guid cryptoId)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _cryptoManagerService.GetCryptoById(cryptoId);
+                var data = await _cryptoManagerService.GetCryptoByIdAsync(cryptoId);
                 response.Data = data;
                 return Ok(response);
             }
@@ -66,13 +67,13 @@ namespace Crypro.Controller
         /// <param name="cryptoCreateDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/cryptos")]
+        [Route("create")]
         public async Task<IActionResult> CreateCrypto([FromBody] CryptoCreateDto cryptoCreateDto)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _cryptoManagerService.CryptoCreate(cryptoCreateDto);
+                var data = await _cryptoManagerService.CryptoCreateAsync(cryptoCreateDto);
                 response.Data = data;
                 return Ok(response);
             }
@@ -90,13 +91,13 @@ namespace Crypro.Controller
         /// <param name="cryptoId"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("api/cryptos/{cryptoId}")]
+        [Route("{cryptoId}")]
         public async Task<IActionResult> RemoveCrypto(Guid cryptoId)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _cryptoManagerService.RemoveCrypto(cryptoId);
+                var data = await _cryptoManagerService.RemoveCryptoAsync(cryptoId);
                 response.Data = data;
                 return Ok(response);
             }
@@ -114,13 +115,13 @@ namespace Crypro.Controller
         /// <param name="cryptoUpdateDto"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("api/crypto/price")]
+        [Route("price")]
         public async Task<IActionResult> UpdateCrypto([FromBody] CryptoUpdateDto cryptoUpdateDto)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _cryptoManagerService.UpdateCrypto(cryptoUpdateDto);
+                var data = await _cryptoManagerService.UpdateCryptoAsync(cryptoUpdateDto);
                 response.Data = data;
                 return Ok(response);
             }

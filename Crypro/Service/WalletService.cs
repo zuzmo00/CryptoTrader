@@ -10,9 +10,9 @@ namespace Crypro.Service
 
     public interface IWalletService
     {
-        Task<WalletGetDto> GetWallet(string id);
-        Task<string> AddToBalance(Guid id, AddToBalanceDto addToBalanceDto);
-        Task<string> DeleteWallet(Guid id);
+        Task<WalletGetDto> GetWalletAsync(string id);
+        Task<string> AddToBalanceAsync(Guid id, AddToBalanceDto addToBalanceDto);
+        Task<string> DeleteWalletAsync(Guid id);
     }
     public class WalletService : IWalletService
     {
@@ -25,7 +25,7 @@ namespace Crypro.Service
             _mapper = mapper;
         }
 
-        public async Task<string> AddToBalance(Guid id, AddToBalanceDto addToBalanceDto)
+        public async Task<string> AddToBalanceAsync(Guid id, AddToBalanceDto addToBalanceDto)
         {
             var Wallet = await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == id) ?? throw new Exception($"Nincs iylen felhasználó");
             Wallet.Balance += addToBalanceDto.Amount;
@@ -34,7 +34,7 @@ namespace Crypro.Service
             return $"A feltöltés sikeres {Wallet.Balance}";
         }
 
-        public async Task<string> DeleteWallet(Guid id)
+        public async Task<string> DeleteWalletAsync(Guid id)
         {
             var wallet = await _dbContext.Wallets.FirstOrDefaultAsync(x => x.UserId == id);
             if (wallet == null)
@@ -49,7 +49,7 @@ namespace Crypro.Service
             }
         }
 
-        public async Task<WalletGetDto> GetWallet(string id)
+        public async Task<WalletGetDto> GetWalletAsync(string id)
         {
             var wallet=await _dbContext.Wallets
                 .Include(x=>x.CryptoPockets)

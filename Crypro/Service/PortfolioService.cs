@@ -7,7 +7,7 @@ namespace Crypro.Service
 {
     public interface IPortfolioService
     {
-        Task<List<PortfolioDto>> GetUserPortfolio(string userId);
+        Task<List<PortfolioDto>> GetUserPortfolioAsync(string userId);
     }
     public class PortfolioService:IPortfolioService
     {
@@ -19,7 +19,7 @@ namespace Crypro.Service
             _mapper = mapper;
         }
 
-        public async Task<List<PortfolioDto>> GetUserPortfolio(string userId)
+        public async Task<List<PortfolioDto>> GetUserPortfolioAsync(string userId)
         {
             var wallet=await _dbContext.Wallets
                 .Include(x => x.CryptoPockets)

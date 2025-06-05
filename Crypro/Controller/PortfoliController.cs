@@ -19,13 +19,13 @@ namespace Crypro.Controller
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("/api/portfolio/{userId}")]
+        [Route("get/{userId}")]
         public async Task<IActionResult> GetPortfolio(string userId)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _portfolioService.GetUserPortfolio(userId);
+                var data = await _portfolioService.GetUserPortfolioAsync(userId);
                 response.Data = data;
                 return Ok(response);
             }

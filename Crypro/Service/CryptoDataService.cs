@@ -131,6 +131,7 @@ namespace Crypro.Service
                 var _context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var userService = scope.ServiceProvider.GetService<IUserService>();
                 var cryptoTradeService = scope.ServiceProvider.GetService<ICryptoTradeService>();
+                var feeService = scope.ServiceProvider.GetService<IFeeService>();
                 var cryptoList = await _context.Cryptos.ToListAsync();
                 var random = new Random();
 
@@ -146,7 +147,7 @@ namespace Crypro.Service
 
                     if (i == 1)
                     {
-                        var user = await userService.CreateAdmin(jsondata[i]);
+                        var user = await userService.CreateAdminAsync(jsondata[i]);
                         createdUser = await _context.Users.FindAsync(user);
                     }
                     else
@@ -182,6 +183,11 @@ namespace Crypro.Service
                         Amount = ((double)(i) + cryptoAmountForSold) / 11521
                     });
                 }
+                await feeService.AddFeeAsync(new AddFeeDto
+                {
+                    Amount = 2
+                });
+
             }
             return true;
         }

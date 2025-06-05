@@ -8,11 +8,11 @@ namespace Crypro.Service
 {
     public interface ICryptoManagerService
     {
-        public Task<List<CryptoGetDto>> ListCryptos();
-        public Task<CryptoGetDto> GetCryptoById(Guid Cryptoid);
-        public Task<Guid>CryptoCreate(CryptoCreateDto cryptoCreateDto);
-        public Task<string> RemoveCrypto(Guid CryptoId);
-        public Task<string> UpdateCrypto(CryptoUpdateDto cryptoUpdateDto);
+        public Task<List<CryptoGetDto>> ListCryptosAsync();
+        public Task<CryptoGetDto> GetCryptoByIdAsync(Guid Cryptoid);
+        public Task<Guid>CryptoCreateAsync(CryptoCreateDto cryptoCreateDto);
+        public Task<string> RemoveCryptoAsync(Guid CryptoId);
+        public Task<string> UpdateCryptoAsync(CryptoUpdateDto cryptoUpdateDto);
 
     }
     public class CryptoManagerService:ICryptoManagerService
@@ -25,7 +25,7 @@ namespace Crypro.Service
             _mapper = mapper;
         }
 
-        public async Task<Guid> CryptoCreate(CryptoCreateDto cryptoCreateDto)
+        public async Task<Guid> CryptoCreateAsync(CryptoCreateDto cryptoCreateDto)
         {
             var crypto = _mapper.Map<Crypto>(cryptoCreateDto);
             await _dbContext.Cryptos.AddAsync(crypto);
@@ -33,19 +33,19 @@ namespace Crypro.Service
             return crypto.Id;
         }
 
-        public async Task<CryptoGetDto> GetCryptoById(Guid Cryptoid)
+        public async Task<CryptoGetDto> GetCryptoByIdAsync(Guid Cryptoid)
         {
             var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id == Cryptoid)?? throw new Exception($"Crypto not found, id:{Cryptoid}");
             return _mapper.Map<CryptoGetDto>(crypto);
         }
 
-        public async Task<List<CryptoGetDto>> ListCryptos()
+        public async Task<List<CryptoGetDto>> ListCryptosAsync()
         {
             var cryptos = await _dbContext.Cryptos.ToListAsync();
             return _mapper.Map<List<CryptoGetDto>>(cryptos);
         }
 
-        public async Task<string> RemoveCrypto(Guid CryptoId)
+        public async Task<string> RemoveCryptoAsync(Guid CryptoId)
         {
             var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id == CryptoId) ?? throw new Exception($"Crypto not found, id:{CryptoId}");
             _dbContext.Cryptos.Remove(crypto);
@@ -53,7 +53,7 @@ namespace Crypro.Service
             return $"Crypto with id: {CryptoId} deleted successfully";
         }
 
-        public async Task<string> UpdateCrypto(CryptoUpdateDto cryptoUpdateDto)
+        public async Task<string> UpdateCryptoAsync(CryptoUpdateDto cryptoUpdateDto)
         {
             var crypto = await _dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id.ToString() == cryptoUpdateDto.CryptoId) ?? throw new Exception($"Crypto not found, id:{cryptoUpdateDto.CryptoId}");
             crypto.value = cryptoUpdateDto.Value;

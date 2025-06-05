@@ -130,7 +130,7 @@ namespace Crypro.Controller
             ApiResponse response = new ApiResponse();
             try
             {
-                var token = await _userService.Login(userLoginDto);
+                var token = await _userService.LoginAsync(userLoginDto);
                 response.Data = token;
                 return Ok(response);
             }

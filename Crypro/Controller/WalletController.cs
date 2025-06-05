@@ -25,7 +25,7 @@ namespace Crypro.Controller
             ApiResponse response=new ApiResponse();
             try
             {
-                var data = await _walletService.GetWallet(userId);
+                var data = await _walletService.GetWalletAsync(userId);
                 response.Data = data;
                 return Ok(response);
             }
@@ -50,7 +50,7 @@ namespace Crypro.Controller
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _walletService.AddToBalance(userId, addToBalanceDto);
+                var data = await _walletService.AddToBalanceAsync(userId, addToBalanceDto);
                 response.Data = data;
                 return Ok(response);
             }
@@ -74,7 +74,7 @@ namespace Crypro.Controller
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _walletService.DeleteWallet(userId);
+                var data = await _walletService.DeleteWalletAsync(userId);
                 response.Data = data;
                 response.Message = "Wallet deleted successfully";
                 return Ok(response);

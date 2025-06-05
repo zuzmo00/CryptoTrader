@@ -36,7 +36,7 @@ namespace Crypro.Service
                                 {
                                     if(limit.Limit >crypto.value)
                                     {
-                                        await cryptoTradeService.BuyCrypto(new CryptoTradeDtoToFunc
+                                        await cryptoTradeService.BuyCryptoAsync(new CryptoTradeDtoToFunc
                                         {
                                             UserId = limit.UserId.ToString(),
                                             CryptoId = limit.CryptoId.ToString(),
@@ -51,7 +51,7 @@ namespace Crypro.Service
                                 {
                                     if (limit.Limit < crypto.value)
                                     {
-                                        await cryptoTradeService.SellCrypto(new CryptoTradeDtoToFunc
+                                        await cryptoTradeService.SellCryptoAsync(new CryptoTradeDtoToFunc
                                         {
                                             UserId = limit.UserId.ToString(),
                                             CryptoId = limit.CryptoId.ToString(),

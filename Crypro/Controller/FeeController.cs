@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Crypro.Controller
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class FeeController:ControllerBase
     {
         private readonly IFeeService _feeService;
@@ -20,7 +21,7 @@ namespace Crypro.Controller
         /// <param name="addFeeDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("/api/fee")]
+        [Route("add")]
         public async Task<IActionResult> AddFee(AddFeeDto addFeeDto)
         {
             ApiResponse response = new ApiResponse();
@@ -44,7 +45,7 @@ namespace Crypro.Controller
         /// <param name="changeFeeDto"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("/api/fee")]
+        [Route("change")]
         public async Task<IActionResult> ChangeFee([FromBody] ChangeFeeDto changeFeeDto)
         {
             ApiResponse response = new ApiResponse();

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Crypro.Controller
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class LimitContoller:ControllerBase
     {
         private readonly ILimitdService _limitdService;
@@ -19,13 +20,13 @@ namespace Crypro.Controller
         /// <param name="limitBuyDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/limits/buy")]
+        [Route("buy")]
         public async Task<IActionResult> LimitBuy([FromBody] LimitBuyDto limitBuyDto)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _limitdService.LimitBuy(limitBuyDto);
+                var data = await _limitdService.LimitBuyAsync(limitBuyDto);
                 response.Data = data;
                 return Ok(response);
             }
@@ -43,13 +44,13 @@ namespace Crypro.Controller
         /// <param name="limitSellDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/limits/sell")]
+        [Route("sell")]
         public async Task<IActionResult> LimitSell([FromBody] LimitSellDto limitSellDto)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _limitdService.LimitSell(limitSellDto);
+                var data = await _limitdService.LimitSellAsync(limitSellDto);
                 response.Data = data;
                 return Ok(response);
             }
@@ -62,13 +63,13 @@ namespace Crypro.Controller
             }
         }
         [HttpGet]
-        [Route("api/limits/{UserId}")]
+        [Route("{UserId}")]
         public async Task<IActionResult> ListLimits(Guid UserId)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _limitdService.ListLimits(UserId);
+                var data = await _limitdService.ListLimitsAsync(UserId);
                 response.Data = data;
                 return Ok(response);
             }
@@ -81,13 +82,13 @@ namespace Crypro.Controller
             }
         }
         [HttpDelete]
-        [Route("api/limits/{Id}")]
+        [Route("{Id}")]
         public async Task<IActionResult> CancelLimit(Guid Id)
         {
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _limitdService.CancelLimit(Id);
+                var data = await _limitdService.CancelLimitAsync(Id);
                 response.Data = data;
                 return Ok(response);
             }

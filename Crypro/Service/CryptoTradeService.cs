@@ -8,9 +8,9 @@ namespace Crypro.Service
 {
     public interface ICryptoTradeService
     {
-        Task<string> BuyCrypto(CryptoTradeDtoToFunc cryptoTradeDto);
+        Task<string> BuyCryptoAsync(CryptoTradeDtoToFunc cryptoTradeDto);
         Task<string> BuyCryptoInit(CryptoTradeDtoToFunc cryptoTradeDto);
-        Task<string> SellCrypto(CryptoTradeDtoToFunc cryptoTradeDto);
+        Task<string> SellCryptoAsync(CryptoTradeDtoToFunc cryptoTradeDto);
         Task<string> SellCryptoInit(CryptoTradeDtoToFunc cryptoTradeDto);
     }
     public class CryptoTradeService : ICryptoTradeService
@@ -22,9 +22,9 @@ namespace Crypro.Service
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public async Task<string> BuyCrypto(CryptoTradeDtoToFunc cryptoTradeDto)
+        public async Task<string> BuyCryptoAsync(CryptoTradeDtoToFunc cryptoTradeDto)
         {
-            var fee = _dbContext.TransactionFees.First()?? throw new Exception("There is no fee available");
+            var fee = await _dbContext.TransactionFees.FirstOrDefaultAsync() ?? throw new Exception("Fee not found");
             var user = _dbContext.Users.Include(x => x.Wallet).FirstOrDefault(x => x.Id.ToString() == cryptoTradeDto.UserId) ?? throw new Exception($"User not found with id: {cryptoTradeDto.UserId}");
             var crypto = _dbContext.Cryptos.FirstOrDefault(x => x.Id.ToString() == cryptoTradeDto.CryptoId) ?? throw new Exception($"Crypto not found with id: {cryptoTradeDto.CryptoId}");
             double totalCost = (cryptoTradeDto.Amount * crypto.value) * (1 + fee.Amount / 100.0);
@@ -124,7 +124,7 @@ namespace Crypro.Service
             }
         }
 
-        public async Task<string> SellCrypto(CryptoTradeDtoToFunc cryptoTradeDto)
+        public async Task<string> SellCryptoAsync(CryptoTradeDtoToFunc cryptoTradeDto)
         {
             var fee = _dbContext.TransactionFees.First();
             var user = await _dbContext.Users.Include(x => x.Wallet).FirstOrDefaultAsync(x => x.Id.ToString() == cryptoTradeDto.UserId) ?? throw new Exception($"User not found with id: {cryptoTradeDto.UserId}");

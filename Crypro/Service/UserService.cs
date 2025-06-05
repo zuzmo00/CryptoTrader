@@ -18,10 +18,10 @@ namespace Crypro.Service
         Task<bool> UpdateUserAsync(Guid userId, UserUodateDto userUpdateDto);
         Task<bool> DeleteUserAsync(Guid userId);
         Task<User> GetUserByIdAsync(Guid userId);
-        Task<Guid> CreateAdmin(UserCreateDto userCreateDto);
+        Task<Guid> CreateAdminAsync(UserCreateDto userCreateDto);
         Task<ClaimsIdentity> GetClaimsIdentity(User user);
-        Task<string> GenerateToken(User user);
-        Task<string> Login(UserLoginDto userLoginDto);
+        Task<string> GenerateTokenAsync(User user);
+        Task<string> LoginAsync(UserLoginDto userLoginDto);
     }
     public class UserService : IUserService
     {
@@ -36,7 +36,7 @@ namespace Crypro.Service
             _configuration = configuration;
         }
 
-        public async Task<Guid> CreateAdmin(UserCreateDto userCreateDto)
+        public async Task<Guid> CreateAdminAsync(UserCreateDto userCreateDto)
         {
             var email = await _dbContext.Users.FirstOrDefaultAsync(x=>x.Email==userCreateDto.Email);
             if (email != null)
@@ -112,7 +112,7 @@ namespace Crypro.Service
 
         }
 
-        public async Task<string> GenerateToken(User user)
+        public async Task<string> GenerateTokenAsync(User user)
         {
             var id = await GetClaimsIdentity(user);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]!));
@@ -138,14 +138,14 @@ namespace Crypro.Service
             return Task.FromResult(new ClaimsIdentity(claims, "Token"));
         }
 
-        public async Task<string> Login(UserLoginDto userLoginDto)
+        public async Task<string> LoginAsync(UserLoginDto userLoginDto)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userLoginDto.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(userLoginDto.Password,user.Password))
             {
                 throw new UnauthorizedAccessException("Wrong email or password");
             }
-            return await GenerateToken(user);
+            return await GenerateTokenAsync(user);
         }
     }
 }

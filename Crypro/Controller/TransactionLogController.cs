@@ -25,7 +25,7 @@ namespace Crypro.Controller
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _transactionLogService.GetTransactionByUserId(userId);
+                var data = await _transactionLogService.GetTransactionByUserIdAsync(userId);
                 response.Data = data;
                 return Ok(response);
             }
@@ -49,7 +49,7 @@ namespace Crypro.Controller
             ApiResponse response = new ApiResponse();
             try
             {
-                var data = await _transactionLogService.GetTransactionById(transactionId);
+                var data = await _transactionLogService.GetTransactionByIdAsync(transactionId);
                 response.Data = data;
                 return Ok(response);
             }

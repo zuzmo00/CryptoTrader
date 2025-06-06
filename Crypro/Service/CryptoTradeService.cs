@@ -3,6 +3,7 @@ using Crypro.Context;
 using Crypro.DTO;
 using Crypro.Entities;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Crypro.Service
 {
@@ -56,7 +57,7 @@ namespace Crypro.Service
                             UserId = user.Id,
                             Date = DateTime.UtcNow,
                             Value = crypto.value,
-                            IsBuy = true,
+                            IsBuy = Enums.TradeType.Buy,
                         };
                         wallet.Balance -= totalCost;
                         _dbContext.Wallets.Update(wallet);
@@ -95,7 +96,7 @@ namespace Crypro.Service
                             UserId = user.Id,
                             Date = DateTime.UtcNow,
                             Value = crypto.value,
-                            IsBuy = true,
+                            IsBuy = Enums.TradeType.Buy,
                         };
                         wallet.Balance -= totalCost;
                         _dbContext.Wallets.Update(wallet);
@@ -148,7 +149,7 @@ namespace Crypro.Service
                         UserId = user.Id,
                         Date = DateTime.UtcNow,
                         Value = crypto.value,
-                        IsBuy = false,
+                        IsBuy = Enums.TradeType.Sell,
                     };
                     wallet.Balance += totalCost;
                     _dbContext.Wallets.Update(wallet);
@@ -208,7 +209,7 @@ namespace Crypro.Service
                             UserId = user.Id,
                             Date = DateTime.UtcNow,
                             Value = crypto.value,
-                            IsBuy = true,
+                            IsBuy = Enums.TradeType.Buy,
                         };
                         wallet.Balance -= totalCost;
                         _dbContext.Wallets.Update(wallet);
@@ -235,7 +236,7 @@ namespace Crypro.Service
                             UserId = user.Id,
                             Date = DateTime.UtcNow,
                             Value = crypto.value,
-                            IsBuy = true,
+                            IsBuy = Enums.TradeType.Buy,
                         };
                         wallet.Balance -= totalCost;
                         _dbContext.Wallets.Update(wallet);
@@ -274,7 +275,7 @@ namespace Crypro.Service
                         UserId = user.Id,
                         Date = DateTime.UtcNow,
                         Value = crypto.value,
-                        IsBuy = false,
+                        IsBuy = Enums.TradeType.Sell,
                     };
                     wallet.Balance += totalCost;
                     _dbContext.Wallets.Update(wallet);

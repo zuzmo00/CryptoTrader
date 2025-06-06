@@ -16,7 +16,7 @@ namespace Crypro.Entities
         [Required]
         public double Amount { get; set; }
         [Required]
-        public bool IsBuy { get; set; } // true for buy, false for sell
+        public Enums.TradeType IsBuy { get; set; } 
         [Required]
         public DateTime Date { get; set; } = DateTime.Now;
     }

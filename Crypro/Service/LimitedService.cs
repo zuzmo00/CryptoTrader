@@ -41,9 +41,9 @@ namespace Crypro.Service
                 throw new Exception("Not enough balance");
             }
             var LimitedBuy = _mapper.Map<LimitedTransaction>(limitBuyDto);
-            LimitedBuy.Type =TradeType.Buy;
+            LimitedBuy.Type =Enums.TradeType.Buy;
             var log=_mapper.Map<LimitLog>(limitBuyDto);
-            log.Type=TradeType.Buy;
+            log.Type=Enums.TradeType.Buy;
             await _dbContext.LimitedTransactions.AddAsync(LimitedBuy);
             await _dbContext.LimitLogs.AddAsync(log);
             await _dbContext.SaveChangesAsync();
@@ -65,9 +65,9 @@ namespace Crypro.Service
                 throw new Exception("Not enough crypto");
             }
             var LimitedSell = _mapper.Map<LimitedTransaction>(limitSellDto);
-            LimitedSell.Type = TradeType.Sell;
+            LimitedSell.Type = Enums.TradeType.Sell;
             var log = _mapper.Map<LimitLog>(limitSellDto);
-            log.Type = TradeType.Sell;
+            log.Type = Enums.TradeType.Sell;
             await _dbContext.LimitedTransactions.AddAsync(LimitedSell);
             await _dbContext.LimitLogs.AddAsync(log);
             await _dbContext.SaveChangesAsync();

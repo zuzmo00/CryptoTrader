@@ -1,4 +1,5 @@
 ﻿using Crypro.Entities;
+using static Crypro.Enums;
 
 namespace Crypro.DTO
 {

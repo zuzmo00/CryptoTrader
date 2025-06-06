@@ -7,7 +7,7 @@
         public string UserId { get; set; }
         public double Value { get; set; }
         public double Amount { get; set; }
-        public bool IsBuy { get; set; } // true for buy, false for sell
+        public Enums.TradeType IsBuy { get; set; } 
         public DateTime Date { get; set; }
     }
     public class TransactinGetByTransactionId
@@ -17,7 +17,7 @@
         public string UserId { get; set; }
         public double Value { get; set; }
         public double Amount { get; set; }
-        public bool IsBuy { get; set; } // true for buy, false for sell
+        public Enums.TradeType  IsBuy { get; set; } // true for buy, false for sell
         public DateTime Date { get; set; }
     }
 }

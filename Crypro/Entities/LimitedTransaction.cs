@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using static Crypro.Enums;
 
 namespace Crypro.Entities
 {
-    public enum TradeType
-    {
-        Buy,
-        Sell
-    }
+   
     public class LimitedTransaction
     {
         [Key]

@@ -20,6 +20,7 @@ namespace Crypro.AddService
             Services.AddScoped<IProfitService, ProfitService>();
             Services.AddScoped<ILimitdService, LimitedService>();
             Services.AddScoped<IFeeService, FeeService>();
+            Services.AddScoped<IConvertService, ConvertService>();
         }
     }
 }

@@ -32,9 +32,9 @@ namespace Crypro.Service
                                 _logger.LogInformation($"Processing with limit{limit.Limit} order for user {limit.UserId} with crypto {limit.CryptoId} and amount {limit.Amount}.");
                                 ICryptoTradeService cryptoTradeService = scope.ServiceProvider.GetRequiredService<ICryptoTradeService>();
                                 var crypto = await dbContext.Cryptos.FirstOrDefaultAsync(x => x.Id == limit.CryptoId, stoppingToken) ?? throw new Exception($"Crypto not found with id: {limit.CryptoId}");
-                                if (limit.Type == TradeType.Buy)
+                                if (limit.Type == Enums.TradeType.Buy)
                                 {
-                                    if(limit.Limit >crypto.value)
+                                    if(limit.Limit >=crypto.value)
                                     {
                                         await cryptoTradeService.BuyCryptoAsync(new CryptoTradeDtoToFunc
                                         {
@@ -47,7 +47,7 @@ namespace Crypro.Service
                                     }
                                 }
 
-                                else if (limit.Type == TradeType.Sell)
+                                else if (limit.Type == Enums.TradeType.Sell)
                                 {
                                     if (limit.Limit < crypto.value)
                                     {
@@ -73,7 +73,7 @@ namespace Crypro.Service
                 {
                     _logger.LogError(ex, "Error occurred while executing background service.");
                 }
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(0,5), stoppingToken);
             }
         }
     }

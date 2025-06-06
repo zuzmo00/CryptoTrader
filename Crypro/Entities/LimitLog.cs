@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static Crypro.Enums;
 
 namespace Crypro.Entities
 {

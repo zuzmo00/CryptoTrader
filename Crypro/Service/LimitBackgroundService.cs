@@ -73,7 +73,7 @@ namespace Crypro.Service
                 {
                     _logger.LogError(ex, "Error occurred while executing background service.");
                 }
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(0.5), stoppingToken);
             }
         }
     }

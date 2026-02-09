@@ -27,8 +27,9 @@ namespace Crypro.Controller
             ApiResponse response = new ApiResponse();
             try
             {
-                await _userService.CreateUserAsync(userCreateDto);
+                var id= await _userService.CreateUserAsync(userCreateDto);
                 response.Message = "User created successfully";
+                response.Data = id;
                 return Ok(response);
             }
             catch (Exception ex)

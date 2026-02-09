@@ -38,7 +38,8 @@ namespace Crypro.Service
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", _apiKey);
+            _httpClient.DefaultRequestHeaders.Add("x-cg-demo-api-key", _apiKey.Trim());
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "CryptoTraderApp/1.0");
             _httpClient.DefaultRequestHeaders.Add("accept", "application/json");
             var url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,cardano,solana,polkadot,chainlink,uniswap,litecoin,dogecoin,ripple,stellar,tron,algorand,near,vechain&vs_currencies=usd";
 

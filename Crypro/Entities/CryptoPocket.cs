@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json.Serialization;
 
 namespace Crypro.Entities
 {
@@ -10,6 +11,7 @@ namespace Crypro.Entities
         public Guid Id { get; set; }
         [ForeignKey("Wallet")]
         public Guid WalletId { get; set; }
+        [JsonIgnore]
         public Wallet Wallet { get; set; }
 
         [ForeignKey("Crypto")]
